@@ -10,4 +10,8 @@
     <string name="login_google">Continue with Google</string>
     <string name="login_facebook">Continue with Facebook</string>
     <string name="login_messsage_new_account">New to the app? Signup</string>
+    <string name="email">email...</string>
+    <string name="password_confirmation">confirmation password...</string>
+    <string name="signup_messsage_method">Or Signup With</string>
+    <string name="signup_messsage_account">Already have an account? Sign in</string>
 </resources>
