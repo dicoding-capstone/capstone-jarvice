@@ -2,24 +2,24 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bt_login"
+    android:id="@+id/signup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.Login">
+    tools:context=".ui.signup.SignupActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="80dp" />
+        app:layout_constraintGuide_begin="59dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="248dp" />
+        app:layout_constraintGuide_begin="222dp" />
 
     <ImageView
         android:id="@+id/logo_jarvice"
@@ -88,6 +88,27 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_edt_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEdtLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_edtlayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
@@ -97,8 +118,9 @@
         android:layout_marginEnd="16dp"
         android:hint="@string/password"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userNameEdtLayout">
+        app:layout_constraintTop_toBottomOf="@+id/email_edt_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_password"
@@ -106,29 +128,6 @@
             android:layout_height="wrap_content"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/tv_forgetpass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/tv_forgotten_password"
-        android:textSize="11sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edtlayout" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/button"
-        android:text="@string/login"
-        app:layout_constraintEnd_toEndOf="@+id/bt_login_google"
-        app:layout_constraintStart_toStartOf="@+id/bt_login_google"
-        app:layout_constraintTop_toBottomOf="@+id/tv_forgetpass" />
 
     <TextView
         android:id="@+id/tv_message_login_socialmedia"
@@ -139,13 +138,34 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="@string/login_messsage_method"
+        android:text="@string/signup_messsage_method"
         android:textColor="@color/text_color"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_confirmation_edtlayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/password_confirmation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_edtlayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_password_confirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/bt_login_google"
@@ -162,6 +182,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_message_login_socialmedia" />
 
     <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/button"
+        android:text="@string/login"
+        app:layout_constraintEnd_toEndOf="@+id/bt_login_google"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/bt_login_google"
+        app:layout_constraintTop_toBottomOf="@+id/password_confirmation_edtlayout" />
+
+    <Button
         android:id="@+id/bt_login_facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -176,7 +208,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bt_login_google" />
 
     <TextView
-        android:id="@+id/tv_message_new"
+        android:id="@+id/tv_message_new_signup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -184,7 +216,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="@string/login_messsage_new_account"
+        android:text="@string/signup_messsage_account"
         android:textColor="@color/text_color"
         android:textSize="16sp"
         android:textStyle="bold"
