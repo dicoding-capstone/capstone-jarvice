@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">JarviceApp</string>
+    <string name="welcome_messsage">Selamat Datang</string>
+    <string name="login_messsage">Silahkan untuk login terlebih dahulu!</string>
+    <string name="username">username...</string>
+    <string name="password">password...</string>
+    <string name="tv_forgotten_password">Lupa password?</string>
+    <string name="login">Login</string>
+    <string name="login_messsage_method">Pakai metode lain untuk login</string>
+    <string name="login_google">Lanjutkan dengan Google</string>
+    <string name="login_facebook">Lanjutkan dengan Facebook</string>
+    <string name="login_messsage_new_account">Belum memiliki akun? Signup</string>
+</resources>
