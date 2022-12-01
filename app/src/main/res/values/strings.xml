@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">JarviceApp</string>
+    <string name="welcome_messsage">Welcome!</string>
+    <string name="login_messsage">Please login first!</string>
+    <string name="username">username...</string>
+    <string name="password">password...</string>
+    <string name="tv_forgotten_password">Forgotten Password?</string>
+    <string name="login">Login</string>
+    <string name="login_messsage_method">Or Login With</string>
+    <string name="login_google">Continue with Google</string>
+    <string name="login_facebook">Continue with Facebook</string>
+    <string name="login_messsage_new_account">New to the app? Signup</string>
+</resources>
