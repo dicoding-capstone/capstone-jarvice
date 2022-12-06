@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -13,12 +14,18 @@ import com.basgeekball.awesomevalidation.AwesomeValidation
 import com.basgeekball.awesomevalidation.ValidationStyle
 import com.capstone.jarvice.R
 import com.capstone.jarvice.databinding.ActivitySignupBinding
+import com.capstone.jarvice.model.UserModel
 import com.capstone.jarvice.ui.login.Login
+import com.capstone.jarvice.utils.ShowLoading
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var showLoading: ShowLoading
+    private lateinit var progressBar: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +33,9 @@ class SignupActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance()
+        showLoading = ShowLoading()
+        progressBar = binding.progressBar
 
         setupView()
         action()
@@ -58,17 +68,31 @@ class SignupActivity : AppCompatActivity() {
 
         binding.button2.setOnClickListener {
             val name = binding.edtUsername.text.toString()
-            val email = binding.edtEmail.text.toString()
-            val pass = binding.edtPassword.text.toString()
+            val email = binding.edtEmail.text.toString().trim()
+            val pass = binding.edtPassword.text.toString().trim()
             val passConfirm = binding.edtPasswordConfirmation.text.toString()
 
             if (validation.validate()) {
                 if (email.isNotEmpty() && pass.isNotEmpty() && passConfirm.isNotEmpty()) {
+                    showLoading.showLoading(true, progressBar)
                     auth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
-                                dialogAlert()
+                                showLoading.showLoading(false, progressBar)
+                                val dbUser = db.reference.child("users").child(auth.currentUser!!.uid)
+                                val user = UserModel(name)
+                                dbUser.setValue(user).addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        dialogAlert()
+                                    } else {
+                                        Toast.makeText(
+                                            this,
+                                            it.exception.toString(),
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                             } else {
+                                showLoading.showLoading(false, progressBar)
                                 Toast.makeText(
                                     this,
                                     it.exception.toString(),
@@ -76,6 +100,7 @@ class SignupActivity : AppCompatActivity() {
                             }
                         }
                 } else {
+                    showLoading.showLoading(false, progressBar)
                     Toast.makeText(
                         this,
                         getString(R.string.empty_field),
