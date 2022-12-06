@@ -14,4 +14,16 @@
     <string name="password_confirmation">confirmation password...</string>
     <string name="signup_messsage_method">Or Signup With</string>
     <string name="signup_messsage_account">Already have an account? Sign in</string>
+    <string name="signup_messsage">Please fill this form!</string>
+    <string name="signup">signup</string>
+    <string name="invalid_email">The email is not valid!</string>
+    <string name="invalid_password">Password must at least 6 or more</string>
+    <string name="invalid_confirmation_password">password does not match</string>
+    <string name="invalid_validation">please fill in the field correctly</string>
+    <string name="title_alert_dialog">Success</string>
+    <string name="message_alert_dialog">The account has been created successful!</string>
+    <string name="message_positive_button">next</string>
+    <string name="message_alert_dialog_login">Login success!</string>
+    <string name="empty_field">Empty field are not allowed!</string>
+    <string name="invalid_account">account not found</string>
 </resources>
