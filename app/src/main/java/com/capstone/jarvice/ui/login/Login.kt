@@ -1,25 +1,42 @@
 package com.capstone.jarvice.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.basgeekball.awesomevalidation.AwesomeValidation
 import com.basgeekball.awesomevalidation.ValidationStyle
 import com.capstone.jarvice.R
 import com.capstone.jarvice.databinding.ActivityLoginBinding
+import com.capstone.jarvice.model.UserModel
+import com.capstone.jarvice.model.UserPreference
+import com.capstone.jarvice.ui.ViewModelFactory
 import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.ui.signup.SignupActivity
+import com.capstone.jarvice.utils.ShowLoading
 import com.google.firebase.auth.FirebaseAuth
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class Login : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var showLoading: ShowLoading
+    private lateinit var progressBar: View
+    private val loginViewModel by viewModels<LoginViewModel> {
+        ViewModelFactory(UserPreference.getInstance(dataStore))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +44,8 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        showLoading = ShowLoading()
+        progressBar = binding.progressBar
 
         setupView()
         action()
@@ -57,11 +76,15 @@ class Login : AppCompatActivity() {
             val pass = binding.edtPassword.text.toString()
             if (validation.validate()) {
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
+                    showLoading.showLoading(true, progressBar)
                     auth.signInWithEmailAndPassword(email, pass)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
+                                showLoading.showLoading(false, progressBar)
+                                loginViewModel.saveUser(UserModel(isLogin = true))
                                 dialogAlert()
                             } else {
+                                showLoading.showLoading(false, progressBar)
                                 Toast.makeText(
                                     this,
                                     it.exception.toString(),
@@ -70,6 +93,7 @@ class Login : AppCompatActivity() {
                             }
                         }
                 } else {
+                    showLoading.showLoading(false, progressBar)
                     Toast.makeText(
                         this,
                         getString(R.string.empty_field),

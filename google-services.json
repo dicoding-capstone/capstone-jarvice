@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "857566322972",
+    "firebase_url": "https://jarvice-8494b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "jarvice-8494b",
+    "storage_bucket": "jarvice-8494b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857566322972:android:f16ccce17ee9764d929ad9",
+        "android_client_info": {
+          "package_name": "com.capstone.jarvice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857566322972-b25cbrgtqv90hg4eai1earu5722a66ur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.jarvice",
+            "certificate_hash": "9476e0c51fc6f91a77e2132e1cf13594070662f8"
+          }
+        },
+        {
+          "client_id": "857566322972-us7esg4bjclmjl3hucng8jv4c2svlra4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQVzT8rGcWpeiuFKvrp8DlrJhj9U-mhzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "857566322972-us7esg4bjclmjl3hucng8jv4c2svlra4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
