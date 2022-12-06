@@ -11,4 +11,9 @@
     <string name="login_facebook">Lanjutkan dengan Facebook</string>
     <string name="login_messsage_new_account">Belum memiliki akun? Signup</string>
     <string name="email">email...</string>
+    <string name="password_confirmation">konfirmasi password...</string>
+    <string name="signup_messsage_method">Pakai metode lain untuk daftar</string>
+    <string name="signup_messsage_account">Sudah memiliki akun? signin</string>
+    <string name="signup_messsage">Yuk, buat akun Jarvice mu!</string>
+    <string name="signup">signup</string>
 </resources>
