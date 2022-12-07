@@ -28,4 +28,8 @@
     <string name="invalid_account">account not found</string>
     <string name="facebook_app_id">3464430617126624</string>
     <string name="facebook_client_token">a5575bfecce5c1411a009bb58597106b</string>
+    <string name="title_home">Home</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_bookmark">Bookmark</string>
+    <string name="title_profile">Profile</string>
 </resources>

@@ -16,4 +16,20 @@
     <string name="signup_messsage_account">Sudah memiliki akun? signin</string>
     <string name="signup_messsage">Yuk, buat akun Jarvice mu!</string>
     <string name="signup">signup</string>
+    <string name="invalid_email">Email salah!</string>
+    <string name="invalid_password">Password harus berisi 6 karakter atau lebih</string>
+    <string name="invalid_confirmation_password">Password tidak sama</string>
+    <string name="invalid_validation">Silakan isi kolom dengan benar</string>
+    <string name="title_alert_dialog">Sukses</string>
+    <string name="message_alert_dialog">Akun berhasil dibuat!</string>
+    <string name="message_positive_button">Selanjutnya</string>
+    <string name="message_alert_dialog_login">Login Berhasil!</string>
+    <string name="empty_field">Silakan isi kolom yang kosong!</string>
+    <string name="invalid_account">Akun tidak ditemukan</string>
+    <string name="facebook_app_id">3464430617126624</string>
+    <string name="facebook_client_token">a5575bfecce5c1411a009bb58597106b</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_explore">Jelajah</string>
+    <string name="title_bookmark">Bookmark</string>
+    <string name="title_profile">Profil</string>
 </resources>

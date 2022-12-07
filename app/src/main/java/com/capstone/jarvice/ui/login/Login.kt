@@ -64,7 +64,7 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        FacebookSdk.sdkInitialize(applicationContext)
+//        FacebookSdk.sdkInitialize(applicationContext)
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions
