@@ -26,4 +26,6 @@
     <string name="message_alert_dialog_login">Login success!</string>
     <string name="empty_field">Empty field are not allowed!</string>
     <string name="invalid_account">account not found</string>
+    <string name="facebook_app_id">3464430617126624</string>
+    <string name="facebook_client_token">a5575bfecce5c1411a009bb58597106b</string>
 </resources>
