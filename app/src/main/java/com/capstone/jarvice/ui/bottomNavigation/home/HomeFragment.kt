@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showViewModel() {
+        homeViewModel.getBannerJob()
         homeViewModel.isLoading.observe(requireActivity()) {
             showLoading.showLoading(it, progressBar)
         }
