@@ -17,15 +17,18 @@ class JobBannerAdapter(private val listJobBanner: ArrayList<JobsItem>) :
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val (img) = listJobBanner[position]
-        Glide.with(holder.itemView.context)
-            .load(img)
-            .into(holder.binding.imgItemPhoto)
+        holder.bind(listJobBanner[position])
     }
 
     override fun getItemCount(): Int = listJobBanner.size
 
-    class ListViewHolder(var binding: ItemRowBannerJobBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class ListViewHolder(private var binding: ItemRowBannerJobBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(job: JobsItem) {
+            Glide.with(itemView.context)
+                .load(job.image)
+                .into(binding.imgItemPhoto)
+        }
 
+    }
 }
