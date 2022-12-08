@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.capstone.jarvice.ui.bottomNavigation.HomeFragment"
+        android:name="com.capstone.jarvice.ui.bottomNavigation.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 

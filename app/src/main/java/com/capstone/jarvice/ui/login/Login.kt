@@ -100,12 +100,12 @@ class Login : AppCompatActivity() {
     private fun action() {
         val validation = AwesomeValidation(ValidationStyle.BASIC)
         validation.apply {
-            addValidation(binding.edtUsername, Patterns.EMAIL_ADDRESS, getString(R.string.invalid_email))
+            addValidation(binding.edtEmail, Patterns.EMAIL_ADDRESS, getString(R.string.invalid_email))
             addValidation(binding.edtPassword, ".{6,}", getString(R.string.invalid_password))
         }
 
         binding.button2.setOnClickListener {
-            val email = binding.edtUsername.text.toString()
+            val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
             if (validation.validate()) {
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
@@ -145,10 +145,10 @@ class Login : AppCompatActivity() {
             signInWithGoogle()
         }
 
-        binding.btLoginFacebook.setOnClickListener {
-            showLoading.showLoading(true, progressBar)
-            signInWithFacebook()
-        }
+//        binding.btLoginFacebook.setOnClickListener {
+//            showLoading.showLoading(true, progressBar)
+////            signInWithFacebook()
+//        }
 
         binding.tvMessageNew.setOnClickListener {
             val intent = Intent(this@Login, SignupActivity::class.java)
@@ -156,31 +156,11 @@ class Login : AppCompatActivity() {
         }
     }
 
-    private fun signInWithFacebook() {
-        callbackManager = CallbackManager.Factory.create()
-
-        LoginManager.getInstance().logInWithReadPermissions(this@Login, listOf("email", "public_profile"))
-        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
-            override fun onSuccess(result: LoginResult?) {
-                showLoading.showLoading(false, progressBar)
-                loginViewModel.saveUser(UserModel(isLogin = true))
-                dialogAlert()
-            }
-
-            override fun onCancel() {
-                Log.d("Login Facebook", "Canceled")
-                Toast.makeText(this@Login, "Login Canceled", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onError(error: FacebookException?) {
-                Log.d("Error Login Facebook", error.toString())
-                Toast.makeText(this@Login, "Gagal Login", Toast.LENGTH_SHORT).show()
-            }
-        })
-
-//        val loginCallbackManager by lazy { CallbackManager.Factory.create() }
-
-//        LoginManager.getInstance().registerCallback(loginCallbackManager, object : FacebookCallback<LoginResult>{
+//    private fun signInWithFacebook() {
+//        callbackManager = CallbackManager.Factory.create()
+//
+//        LoginManager.getInstance().logInWithReadPermissions(this@Login, listOf("email", "public_profile"))
+//        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
 //            override fun onSuccess(result: LoginResult?) {
 //                showLoading.showLoading(false, progressBar)
 //                loginViewModel.saveUser(UserModel(isLogin = true))
@@ -189,16 +169,36 @@ class Login : AppCompatActivity() {
 //
 //            override fun onCancel() {
 //                Log.d("Login Facebook", "Canceled")
-//
+//                Toast.makeText(this@Login, "Login Canceled", Toast.LENGTH_SHORT).show()
 //            }
 //
 //            override fun onError(error: FacebookException?) {
 //                Log.d("Error Login Facebook", error.toString())
 //                Toast.makeText(this@Login, "Gagal Login", Toast.LENGTH_SHORT).show()
 //            }
-//
 //        })
-    }
+//
+////        val loginCallbackManager by lazy { CallbackManager.Factory.create() }
+//
+////        LoginManager.getInstance().registerCallback(loginCallbackManager, object : FacebookCallback<LoginResult>{
+////            override fun onSuccess(result: LoginResult?) {
+////                showLoading.showLoading(false, progressBar)
+////                loginViewModel.saveUser(UserModel(isLogin = true))
+////                dialogAlert()
+////            }
+////
+////            override fun onCancel() {
+////                Log.d("Login Facebook", "Canceled")
+////
+////            }
+////
+////            override fun onError(error: FacebookException?) {
+////                Log.d("Error Login Facebook", error.toString())
+////                Toast.makeText(this@Login, "Gagal Login", Toast.LENGTH_SHORT).show()
+////            }
+////
+////        })
+//    }
 
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
