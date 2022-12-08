@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
     private fun setBannerJob(job: List<JobsItem>) {
         val listJobs = ArrayList<JobsItem>()
         for (i in job) {
-            val jobBanner = JobsItem(i.image)
+            val jobBanner = JobsItem(i.promopic)
             listJobs.addAll(listOf(jobBanner))
         }
 

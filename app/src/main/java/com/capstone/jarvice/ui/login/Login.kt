@@ -25,6 +25,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle
 import com.capstone.jarvice.R
 import com.capstone.jarvice.databinding.ActivityLoginBinding
 import com.capstone.jarvice.model.UserModel
+import com.capstone.jarvice.model.UserNetwork
 import com.capstone.jarvice.model.UserPreference
 import com.capstone.jarvice.ui.ViewModelFactory
 import com.capstone.jarvice.ui.main.MainActivity
@@ -44,6 +45,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 
@@ -52,6 +54,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class Login : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var showLoading: ShowLoading
     private lateinit var progressBar: View
@@ -76,6 +79,7 @@ class Login : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+        db = FirebaseDatabase.getInstance()
 
         showLoading = ShowLoading()
         progressBar = binding.progressBar
@@ -214,8 +218,30 @@ class Login : AppCompatActivity() {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                auth.fetchSignInMethodsForEmail(account.email.toString()).addOnCompleteListener {
+                    Log.d("Email Check", it.result.signInMethods?.size.toString())
+                    if (it.result.signInMethods?.size == 0){
+                        val dbUser = db.reference.child("users").child(account.id.toString())
+                        firebaseAuthWithGoogle(account.idToken!!)
+                        val user = UserNetwork(
+                            nameUser = account.displayName,
+                            email = account.email,
+                            photoUrl = account.photoUrl.toString(),
+                            keahlian = null
+                        )
+                        dbUser.setValue(user).addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                dialogAlert()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    it.exception.toString(),
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
                 firebaseAuthWithGoogle(account.idToken!!)
-                loginViewModel.saveUser(UserModel(isLogin = true))
                 showLoading.showLoading(false, progressBar)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately

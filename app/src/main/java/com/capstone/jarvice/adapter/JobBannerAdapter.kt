@@ -26,7 +26,7 @@ class JobBannerAdapter(private val listJobBanner: ArrayList<JobsItem>) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(job: JobsItem) {
             Glide.with(itemView.context)
-                .load(job.image)
+                .load(job.promopic)
                 .into(binding.imgItemPhoto)
         }
 

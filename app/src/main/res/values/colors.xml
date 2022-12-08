@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="text_color">#132083</color>
+    <color name="texthint_color">#5e5e5e</color>
     <color name="button">#3F8DFD</color>
     <color name="button_social">#13208340</color>
 

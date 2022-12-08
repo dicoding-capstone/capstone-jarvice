@@ -5,3 +5,10 @@ data class UserModel(
     val isLogin: Boolean? = null,
     val token: String? = null
 )
+
+data class UserNetwork(
+    val nameUser: String? = null,
+    val email: String? = null,
+    val photoUrl: String? = null,
+    val keahlian: String? = null
+)

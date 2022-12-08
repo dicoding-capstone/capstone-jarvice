@@ -10,14 +10,14 @@ data class Response(
 
 data class JobsItem(
 
+	@field:SerializedName("promopic")
+	val promopic: String,
+
 	@field:SerializedName("image")
-	val image: String,
+	val image: String? = null,
 
 	@field:SerializedName("skills")
 	val skills: List<String>? = null,
-
-	@field:SerializedName("promopic")
-	val promopic: String? = null,
 
 	@field:SerializedName("web")
 	val web: String? = null,

@@ -37,4 +37,9 @@
     <string name="inpuJob">Find jobs, company...</string>
     <string name="banner_job">Latest Job</string>
     <string name="recommend_job">Jobs Recommendation</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="emailuser_domain_com">emailuser@domain.com</string>
+    <string name="pengaturan">Pengaturan</string>
+    <string name="keahlian">Keahlian</string>
+    <string name="logout">Logout</string>
 </resources>

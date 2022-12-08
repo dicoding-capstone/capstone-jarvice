@@ -15,7 +15,12 @@
     </style>
 
     <style name="ToolbarTheme">
-        <item name="android:textColorHint">@color/text_color</item>
+        <item name="android:textColorHint">@color/texthint_color</item>
         <item name="android:editTextColor">@color/text_color</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="ProfileButon">
+        <item name="android:editTextColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>
