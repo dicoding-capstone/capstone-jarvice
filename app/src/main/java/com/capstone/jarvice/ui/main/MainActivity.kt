@@ -47,20 +47,20 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-//        action()
+        action()
     }
 
-//    private fun action() {
-//        mainViewModel.getUser().observe(this) {
-//            if (it.isLogin!!) {
+    private fun action() {
+        mainViewModel.getUser().observe(this) {
+            if (it.isLogin!!) {
 //                binding.button.setOnClickListener {
 //                    auth.signOut()
 //                    mainViewModel.logout()
 //                }
-//            } else {
-//                startActivity(Intent(this, Login::class.java))
-//                finish()
-//            }
-//        }
-//    }
+            } else {
+                startActivity(Intent(this, Login::class.java))
+                finish()
+            }
+        }
+    }
 }

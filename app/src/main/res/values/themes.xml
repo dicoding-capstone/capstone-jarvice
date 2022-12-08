@@ -13,4 +13,9 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ToolbarTheme">
+        <item name="android:textColorHint">@color/text_color</item>
+        <item name="android:editTextColor">@color/text_color</item>
+    </style>
 </resources>

@@ -11,4 +11,7 @@
     <color name="text_color">#132083</color>
     <color name="button">#3F8DFD</color>
     <color name="button_social">#13208340</color>
+
+    <color name="query_hint_color">#13208380</color>
+    <color name="bg_fragment_home">#F7F6FB</color>
 </resources>
