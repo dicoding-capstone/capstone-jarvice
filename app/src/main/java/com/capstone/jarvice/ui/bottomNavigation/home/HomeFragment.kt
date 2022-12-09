@@ -58,7 +58,6 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.listJob.observe(requireActivity()) {
-            Log.d("Data Job List", it.toString())
             setListJob(it)
         }
 
@@ -97,7 +96,6 @@ class HomeFragment : Fragment() {
                 experience = i.experience,
                 salary = i.salary
             )
-            Log.d("List Job", jobList.toString())
             listJobs.addAll(listOf(jobList))
         }
 

@@ -166,7 +166,7 @@ class SignupActivity : AppCompatActivity() {
                 auth.fetchSignInMethodsForEmail(account.email.toString()).addOnCompleteListener {
                     Log.d("Email Check", it.result.signInMethods?.size.toString())
                     if (it.result.signInMethods?.size == 0){
-                        val dbUser = db.reference.child("users").child(account.id.toString())
+                        val dbUser = db.reference.child("users").child(auth.currentUser!!.uid)
                         firebaseAuthWithGoogle(account.idToken!!)
                         val user = UserNetwork(
                             nameUser = account.displayName,

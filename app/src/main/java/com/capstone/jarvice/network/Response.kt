@@ -82,3 +82,19 @@ data class ListJobsItem(
 	@field:SerializedName("salary")
 	val salary: List<Int>? = null
 )
+
+data class UserResponse(
+
+	@field:SerializedName("email")
+	val email: String? = null,
+
+	@field:SerializedName("nameUser")
+	val nameUser: String? = null,
+
+	@field:SerializedName("photoUrl")
+	val image: String? = null,
+
+	@field:SerializedName("keahlian")
+	val keahlian: String? = null,
+
+)
