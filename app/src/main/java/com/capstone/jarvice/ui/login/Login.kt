@@ -30,6 +30,7 @@ import com.capstone.jarvice.model.UserPreference
 import com.capstone.jarvice.ui.ViewModelFactory
 import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.ui.signup.SignupActivity
+import com.capstone.jarvice.utils.LoadingDialog
 import com.capstone.jarvice.utils.ShowLoading
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -56,7 +57,7 @@ class Login : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var showLoading: ShowLoading
+    private lateinit var showLoading: LoadingDialog
     private lateinit var progressBar: View
     private lateinit var callbackManager: CallbackManager
     private val loginViewModel by viewModels<LoginViewModel> {
@@ -81,7 +82,7 @@ class Login : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
 
-        showLoading = ShowLoading()
+        showLoading = LoadingDialog(this@Login)
         progressBar = binding.progressBar
 
         setupView()
@@ -113,15 +114,18 @@ class Login : AppCompatActivity() {
             val pass = binding.edtPassword.text.toString()
             if (validation.validate()) {
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
-                    showLoading.showLoading(true, progressBar)
+                    showLoading.startLoading()
                     auth.signInWithEmailAndPassword(email, pass)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
-                                showLoading.showLoading(false, progressBar)
-                                loginViewModel.saveUser(UserModel(isLogin = true))
+                                showLoading.dismissLoading()
+                                loginViewModel.saveUser(UserModel(
+                                    isLogin = true,
+                                    uidKey = auth.currentUser?.uid
+                                ))
                                 dialogAlert()
                             } else {
-                                showLoading.showLoading(false, progressBar)
+                                showLoading.dismissLoading()
                                 Toast.makeText(
                                     this,
                                     it.exception.toString(),
@@ -130,7 +134,7 @@ class Login : AppCompatActivity() {
                             }
                         }
                 } else {
-                    showLoading.showLoading(false, progressBar)
+                    showLoading.dismissLoading()
                     Toast.makeText(
                         this,
                         getString(R.string.empty_field),
@@ -145,64 +149,15 @@ class Login : AppCompatActivity() {
         }
 
         binding.btLoginGoogle.setOnClickListener {
-            showLoading.showLoading(true, progressBar)
+            showLoading.startLoading()
             signInWithGoogle()
         }
-
-//        binding.btLoginFacebook.setOnClickListener {
-//            showLoading.showLoading(true, progressBar)
-////            signInWithFacebook()
-//        }
 
         binding.tvMessageNew.setOnClickListener {
             val intent = Intent(this@Login, SignupActivity::class.java)
             startActivity(intent)
         }
     }
-
-//    private fun signInWithFacebook() {
-//        callbackManager = CallbackManager.Factory.create()
-//
-//        LoginManager.getInstance().logInWithReadPermissions(this@Login, listOf("email", "public_profile"))
-//        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
-//            override fun onSuccess(result: LoginResult?) {
-//                showLoading.showLoading(false, progressBar)
-//                loginViewModel.saveUser(UserModel(isLogin = true))
-//                dialogAlert()
-//            }
-//
-//            override fun onCancel() {
-//                Log.d("Login Facebook", "Canceled")
-//                Toast.makeText(this@Login, "Login Canceled", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun onError(error: FacebookException?) {
-//                Log.d("Error Login Facebook", error.toString())
-//                Toast.makeText(this@Login, "Gagal Login", Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//
-////        val loginCallbackManager by lazy { CallbackManager.Factory.create() }
-//
-////        LoginManager.getInstance().registerCallback(loginCallbackManager, object : FacebookCallback<LoginResult>{
-////            override fun onSuccess(result: LoginResult?) {
-////                showLoading.showLoading(false, progressBar)
-////                loginViewModel.saveUser(UserModel(isLogin = true))
-////                dialogAlert()
-////            }
-////
-////            override fun onCancel() {
-////                Log.d("Login Facebook", "Canceled")
-////
-////            }
-////
-////            override fun onError(error: FacebookException?) {
-////                Log.d("Error Login Facebook", error.toString())
-////                Toast.makeText(this@Login, "Gagal Login", Toast.LENGTH_SHORT).show()
-////            }
-////
-////        })
-//    }
 
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
@@ -221,39 +176,29 @@ class Login : AppCompatActivity() {
                 auth.fetchSignInMethodsForEmail(account.email.toString()).addOnCompleteListener {
                     Log.d("Email Check", it.result.signInMethods?.size.toString())
                     if (it.result.signInMethods?.size == 0){
-                        val dbUser = db.reference.child("users").child(account.id.toString())
-                        firebaseAuthWithGoogle(account.idToken!!)
                         val user = UserNetwork(
                             nameUser = account.displayName,
                             email = account.email,
                             photoUrl = account.photoUrl.toString(),
                             keahlian = null
                         )
-                        dbUser.setValue(user).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                dialogAlert()
-                            } else {
-                                Toast.makeText(
-                                    this,
-                                    it.exception.toString(),
-                                    Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        firebaseAuthWithGoogle(account.idToken!!, user)
+                    } else {
+                        firebaseAuthWithGoogle(account.idToken!!, null)
                     }
                 }
-                firebaseAuthWithGoogle(account.idToken!!)
-                showLoading.showLoading(false, progressBar)
+                showLoading.dismissLoading()
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
-                showLoading.showLoading(false, progressBar)
+                showLoading.dismissLoading()
                 Toast.makeText(this, e.toString(),
                     Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun firebaseAuthWithGoogle(idToken: String, dataUpload: UserNetwork?) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
@@ -261,24 +206,40 @@ class Login : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
+                    if (dataUpload != null){
+                        uploadDatabase(user!!.uid, dataUpload)
+                    }
                     loginViewModel.saveUser(UserModel(isLogin = true))
-                    showLoading.showLoading(false, progressBar)
+                    showLoading.dismissLoading()
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    showLoading.showLoading(false, progressBar)
-                    Toast.makeText(this, task.exception.toString(),
+                    showLoading.dismissLoading()
+                    Toast.makeText(this, "Login Gagal",
                         Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
             }
     }
 
+    private fun uploadDatabase(uid: String, user: UserNetwork) {
+        val dbUser = db.reference.child("users").child(uid)
+        dbUser.setValue(user).addOnCompleteListener {
+            if (it.isSuccessful) {
+                dialogAlert()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Gagal Save Ke Database",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null){
-            startActivity(Intent(this@Login, MainActivity::class.java))
-            finish()
+            dialogAlert()
         }
     }
 

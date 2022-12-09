@@ -21,6 +21,7 @@ import com.capstone.jarvice.databinding.ActivitySignupBinding
 import com.capstone.jarvice.model.UserModel
 import com.capstone.jarvice.model.UserNetwork
 import com.capstone.jarvice.ui.login.Login
+import com.capstone.jarvice.utils.LoadingDialog
 import com.capstone.jarvice.utils.ShowLoading
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -35,7 +36,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var db: FirebaseDatabase
-    private lateinit var showLoading: ShowLoading
+    private lateinit var showLoading: LoadingDialog
     private lateinit var progressBar: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +54,7 @@ class SignupActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
-        showLoading = ShowLoading()
+        showLoading = LoadingDialog(this)
         progressBar = binding.progressBar
 
         setupView()
@@ -93,11 +94,11 @@ class SignupActivity : AppCompatActivity() {
 
             if (validation.validate()) {
                 if (email.isNotEmpty() && pass.isNotEmpty() && passConfirm.isNotEmpty()) {
-                    showLoading.showLoading(true, progressBar)
+                    showLoading.startLoading()
                     auth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
-                                showLoading.showLoading(false, progressBar)
+                                showLoading.dismissLoading()
                                 val dbUser = db.reference.child("users").child(auth.currentUser!!.uid)
                                 val user = UserNetwork(
                                     nameUser = name,
@@ -116,7 +117,7 @@ class SignupActivity : AppCompatActivity() {
                                     }
                                 }
                             } else {
-                                showLoading.showLoading(false, progressBar)
+                                showLoading.dismissLoading()
                                 Toast.makeText(
                                     this,
                                     it.exception.toString(),
@@ -124,7 +125,7 @@ class SignupActivity : AppCompatActivity() {
                             }
                         }
                 } else {
-                    showLoading.showLoading(false, progressBar)
+                    showLoading.dismissLoading()
                     Toast.makeText(
                         this,
                         getString(R.string.empty_field),
@@ -139,7 +140,7 @@ class SignupActivity : AppCompatActivity() {
         }
 
         binding.btLoginGoogle.setOnClickListener {
-            showLoading.showLoading(true, progressBar)
+            showLoading.startLoading()
             signInWithGoogle()
         }
 
@@ -166,24 +167,13 @@ class SignupActivity : AppCompatActivity() {
                 auth.fetchSignInMethodsForEmail(account.email.toString()).addOnCompleteListener {
                     Log.d("Email Check", it.result.signInMethods?.size.toString())
                     if (it.result.signInMethods?.size == 0){
-                        val dbUser = db.reference.child("users").child(account.id.toString())
-                        firebaseAuthWithGoogle(account.idToken!!)
                         val user = UserNetwork(
                             nameUser = account.displayName,
                             email = account.email,
                             photoUrl = account.photoUrl.toString(),
                             keahlian = null
                         )
-                        dbUser.setValue(user).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                dialogAlert()
-                            } else {
-                                Toast.makeText(
-                                    this,
-                                    it.exception.toString(),
-                                    Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        firebaseAuthWithGoogle(account.idToken!!, user)
                     } else {
                         Toast.makeText(
                             this,
@@ -191,35 +181,53 @@ class SignupActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT).show()
                     }
                 }
-                showLoading.showLoading(false, progressBar)
+                showLoading.dismissLoading()
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(ContentValues.TAG, "Google sign in failed", e)
-                showLoading.showLoading(false, progressBar)
+                showLoading.dismissLoading()
                 Toast.makeText(this, e.toString(),
                     Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun firebaseAuthWithGoogle(idToken: String, dataUpload: UserNetwork?) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(ContentValues.TAG, "signInWithCredential:success")
-                    showLoading.showLoading(false, progressBar)
+                    val user = auth.currentUser
+                    if (dataUpload != null){
+                        uploadDatabase(user!!.uid, dataUpload)
+                    }
+                    showLoading.dismissLoading()
                     dialogAlert()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
-                    showLoading.showLoading(false, progressBar)
+                    showLoading.dismissLoading()
                     Toast.makeText(this, task.exception.toString(),
                         Toast.LENGTH_SHORT).show()
                     dialogAlert()
                 }
             }
+    }
+
+    private fun uploadDatabase(uid: String, user: UserNetwork) {
+        val dbUser = db.reference.child("users").child(uid)
+        dbUser.setValue(user).addOnCompleteListener {
+            if (it.isSuccessful) {
+                dialogAlert()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Gagal Save Ke Database",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun dialogAlert() {

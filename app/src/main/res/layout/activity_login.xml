@@ -9,6 +9,7 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="32dp"
         tools:context=".ui.login.Login">
 
         <androidx.constraintlayout.widget.Guideline
@@ -133,6 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:paddingVertical="12dp"
             android:backgroundTint="@color/button"
             android:text="@string/login"
             app:layout_constraintEnd_toEndOf="@+id/bt_login_google"
@@ -162,7 +164,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="72dp"
+            android:layout_marginHorizontal="16dp"
+            android:paddingVertical="10dp"
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/google1"
             android:text="@string/login_google"
@@ -171,27 +174,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_message_login_socialmedia" />
 
-        <Button
-            android:id="@+id/bt_login_facebook"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="72dp"
-            android:backgroundTint="@color/white"
-            android:drawableLeft="@drawable/facebook"
-            android:text="@string/login_facebook"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_login_google" />
-
         <TextView
             android:id="@+id/tv_message_new"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
@@ -201,7 +189,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_login_facebook" />
+            app:layout_constraintTop_toBottomOf="@+id/bt_login_google" />
 
         <ProgressBar
             android:id="@+id/progressBar"
