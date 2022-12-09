@@ -8,6 +8,7 @@
     android:paddingTop="8dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_list_jobs"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_marginHorizontal="16dp"

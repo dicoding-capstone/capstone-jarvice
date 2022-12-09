@@ -1,6 +1,8 @@
 package com.capstone.jarvice.network
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class Response(
 
@@ -8,6 +10,7 @@ data class Response(
 	val jobs: List<JobsItem>
 )
 
+@Parcelize
 data class JobsItem(
 
 	@field:SerializedName("promopic")
@@ -42,7 +45,7 @@ data class JobsItem(
 
 	@field:SerializedName("salary")
 	val salary: List<Int>? = null
-)
+): Parcelable
 
 data class ListJobResponse(
 
@@ -50,6 +53,7 @@ data class ListJobResponse(
 	val jobs: List<ListJobsItem>
 )
 
+@Parcelize
 data class ListJobsItem(
 
 	@field:SerializedName("image")
@@ -81,7 +85,7 @@ data class ListJobsItem(
 
 	@field:SerializedName("salary")
 	val salary: List<Int>? = null
-)
+): Parcelable
 
 data class UserResponse(
 

@@ -2,8 +2,11 @@ package com.capstone.jarvice.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
@@ -36,27 +39,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        action()
+        setupView()
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_explore, R.id.navigation_bookmark, R.id.navigation_profile
+                R.id.navigation_home,
+                R.id.navigation_explore,
+                R.id.navigation_bookmark,
+                R.id.navigation_profile
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
 
-        action()
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
     }
 
     private fun action() {
         mainViewModel.getUser().observe(this) {
             if (it.isLogin!!) {
-//                binding.button.setOnClickListener {
-//                    auth.signOut()
-//                    mainViewModel.logout()
-//                }
+                Log.e("MainActivity", "Login True")
             } else {
                 startActivity(Intent(this, Login::class.java))
                 finish()
