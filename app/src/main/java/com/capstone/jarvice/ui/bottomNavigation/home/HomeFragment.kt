@@ -1,7 +1,6 @@
 package com.capstone.jarvice.ui.bottomNavigation.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +88,7 @@ class HomeFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = adapterBanner
-            }
+        }
     }
 
     private fun setListJob(job: List<ListJobsItem>) {

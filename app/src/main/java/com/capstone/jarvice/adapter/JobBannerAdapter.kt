@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.jarvice.databinding.ItemRowBannerJobBinding
 import com.capstone.jarvice.network.JobsItem
-import com.capstone.jarvice.ui.detail.DetailActivity
 import com.capstone.jarvice.ui.detail.DetailActivityBanner
 
 class JobBannerAdapter(private val listJobBanner: ArrayList<JobsItem>) :

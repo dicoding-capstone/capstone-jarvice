@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
@@ -46,7 +46,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_explore, R.id.navigation_bookmark, R.id.navigation_profile
+                R.id.navigation_home,
+                R.id.navigation_explore,
+                R.id.navigation_bookmark,
+                R.id.navigation_profile
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -69,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     private fun action() {
         mainViewModel.getUser().observe(this) {
             if (it.isLogin!!) {
-                Toast.makeText(this, "You are login", Toast.LENGTH_SHORT).show()
+                Log.e("MainActivity", "Login True")
             } else {
                 startActivity(Intent(this, Login::class.java))
                 finish()
