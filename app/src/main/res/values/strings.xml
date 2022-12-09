@@ -34,7 +34,7 @@
     <string name="title_profile">Profile</string>
     <string name="welcome_main">Welcome!</string>
     <string name="welcome_main_username">Username</string>
-    <string name="inpuJob">Find jobs, company...</string>
+    <string name="inpuJob">Find jobs, company…</string>
     <string name="banner_job">Latest Job</string>
     <string name="recommend_job">Jobs Recommendation</string>
     <string name="edit_profile">Edit Profile</string>
@@ -44,4 +44,21 @@
     <string name="logout">Logout</string>
     <string name="nama_lowongan">Nama Lowongan</string>
     <string name="nama_company">Nama Company</string>
+    <string name="jobs_detail_title">Detail Jobs</string>
+    <string name="jobs_name_title">Jobs</string>
+    <string name="company_name_title">Company</string>
+    <string name="category_name_title">Category</string>
+    <string name="location_name_title">Company location</string>
+    <string name="level_name_title">Jobs level</string>
+    <string name="date_name_title">Vacany date</string>
+    <string name="tag_name_title">Tag</string>
+    <string name="two_dot">:</string>
+    <string name="fill">.....</string>
+    <string name="detail_title">Vacancy Detail</string>
+    <string name="bt_landing_page">Landing Page</string>
+    <string name="bt_web_page">Web Page</string>
+    <string name="time_name_title">Full Time</string>
+    <string name="range_salary">Range Salary</string>
+    <string name="title_fragment_bookmark">Yours Bookmark</string>
+    <string name="log_message">Yours bookmark is empty</string>
 </resources>

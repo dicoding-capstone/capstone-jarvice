@@ -2,7 +2,10 @@ package com.capstone.jarvice.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        action()
+        setupView()
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
@@ -46,17 +51,25 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
 
-        action()
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
     }
 
     private fun action() {
         mainViewModel.getUser().observe(this) {
             if (it.isLogin!!) {
-//                binding.button.setOnClickListener {
-//                    auth.signOut()
-//                    mainViewModel.logout()
-//                }
+                Toast.makeText(this, "You are login", Toast.LENGTH_SHORT).show()
             } else {
                 startActivity(Intent(this, Login::class.java))
                 finish()

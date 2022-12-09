@@ -12,14 +12,6 @@ class ExploreViewModel : ViewModel() {
     val text: LiveData<String> = _text
 }
 
-class BookmarkViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Bookmark Fragment"
-    }
-    val text: LiveData<String> = _text
-}
-
 class ProfileViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
         value = "This is profile Fragment"

@@ -1,15 +1,17 @@
 package com.capstone.jarvice.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.jarvice.databinding.ItemColJobBinding
-import com.capstone.jarvice.databinding.ItemRowBannerJobBinding
-import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.network.ListJobsItem
+import com.capstone.jarvice.ui.detail.DetailActivity
 
-class ListJobAdapter(private val listJob: ArrayList<ListJobsItem>):
+class ListJobAdapter(private val listJob: ArrayList<ListJobsItem>) :
     RecyclerView.Adapter<ListJobAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -30,9 +32,19 @@ class ListJobAdapter(private val listJob: ArrayList<ListJobsItem>):
             Glide.with(itemView.context)
                 .load(job.image)
                 .into(binding.companyLogo)
-            binding.tvJobName.text = job.name
-            binding.tvCompanyName.text = job.company
-        }
+            binding.apply {
+                tvJobName.text = job.name
+                tvCompanyName.text = job.company
+                cardListJobs.setOnClickListener {
+                    val moveDetailJobs =
+                        Intent(itemView.context, DetailActivity::class.java)
+                    moveDetailJobs.putExtra(DetailActivity.DETAIL_JOB, job)
 
+                    itemView.context.startActivity(moveDetailJobs,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity)
+                            .toBundle())
+                }
+            }
+        }
     }
 }
