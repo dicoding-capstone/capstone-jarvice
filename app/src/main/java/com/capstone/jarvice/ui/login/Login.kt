@@ -180,7 +180,8 @@ class Login : AppCompatActivity() {
                             nameUser = account.displayName,
                             email = account.email,
                             photoUrl = account.photoUrl.toString(),
-                            keahlian = null
+                            keahlian = null,
+                            method = false
                         )
                         firebaseAuthWithGoogle(account.idToken!!, user)
                     } else {

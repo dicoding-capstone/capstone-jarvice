@@ -104,7 +104,8 @@ class SignupActivity : AppCompatActivity() {
                                     nameUser = name,
                                     email = email,
                                     photoUrl = null,
-                                    keahlian = null
+                                    keahlian = null,
+                                    method = true
                                 )
                                 dbUser.setValue(user).addOnCompleteListener {
                                     if (it.isSuccessful) {
@@ -171,7 +172,8 @@ class SignupActivity : AppCompatActivity() {
                             nameUser = account.displayName,
                             email = account.email,
                             photoUrl = account.photoUrl.toString(),
-                            keahlian = null
+                            keahlian = null,
+                            method = false
                         )
                         firebaseAuthWithGoogle(account.idToken!!, user)
                     } else {
