@@ -14,6 +14,8 @@ import com.capstone.jarvice.databinding.FragmentHomeBinding
 import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.network.ListJobsItem
 import com.capstone.jarvice.utils.ShowLoading
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class HomeFragment : Fragment() {
 
@@ -40,6 +42,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         showLoading = ShowLoading()
         progressBar = binding.progressBar
+
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener{
+            binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
+        }
 
         showViewModel()
 

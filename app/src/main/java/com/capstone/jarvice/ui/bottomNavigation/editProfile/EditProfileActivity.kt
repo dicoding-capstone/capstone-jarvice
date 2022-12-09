@@ -106,6 +106,7 @@ class EditProfileActivity : AppCompatActivity() {
                         Log.d("Image Uri", "Is Empty")
                     }
                 } else {
+                    showLoading.dismissLoading()
                     Toast.makeText(
                         this@EditProfileActivity,
                         getString(R.string.invalid_validation),

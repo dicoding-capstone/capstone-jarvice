@@ -85,6 +85,9 @@ class EditGoogleActivity : AppCompatActivity() {
                         uploadToDatabase(username, null)
                         Log.d("Image Uri", "Is Empty")
                     }
+                } else {
+                    showLoading.dismissLoading()
+                    Toast.makeText(this@EditGoogleActivity, "Silahkan Isi Data", Toast.LENGTH_SHORT).show()
                 }
             }
 
