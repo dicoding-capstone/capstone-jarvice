@@ -1,6 +1,7 @@
 package com.capstone.jarvice.ui.bottomNavigation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.jarvice.adapter.JobBannerAdapter
+import com.capstone.jarvice.adapter.ListJobAdapter
 import com.capstone.jarvice.databinding.FragmentHomeBinding
 import com.capstone.jarvice.network.JobsItem
+import com.capstone.jarvice.network.ListJobsItem
 import com.capstone.jarvice.utils.ShowLoading
 
 class HomeFragment : Fragment() {
@@ -45,12 +48,18 @@ class HomeFragment : Fragment() {
 
     private fun showViewModel() {
         homeViewModel.getBannerJob()
+        homeViewModel.getListJob()
         homeViewModel.isLoading.observe(requireActivity()) {
             showLoading.showLoading(it, progressBar)
         }
 
         homeViewModel.job.observe(requireActivity()) {
             setBannerJob(it)
+        }
+
+        homeViewModel.listJob.observe(requireActivity()) {
+            Log.d("Data Job List", it.toString())
+            setListJob(it)
         }
 
         homeViewModel.toast.observe(requireActivity()) {
@@ -71,6 +80,33 @@ class HomeFragment : Fragment() {
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = adapterBanner
             }
+    }
+
+    private fun setListJob(job: List<ListJobsItem>) {
+        val listJobs = ArrayList<ListJobsItem>()
+        for (i in job) {
+            val jobList = ListJobsItem(
+                image = i.image,
+                skills = i.skills,
+                web = i.web,
+                fulltime = i.fulltime,
+                name = i.name,
+                company = i.company,
+                location = i.location,
+                category = i.category,
+                experience = i.experience,
+                salary = i.salary
+            )
+            Log.d("List Job", jobList.toString())
+            listJobs.addAll(listOf(jobList))
+        }
+
+        val adapterBanner = ListJobAdapter(listJobs)
+        binding.rvListJob.apply {
+            layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = adapterBanner
+        }
     }
 
     private fun toast(text: String) {

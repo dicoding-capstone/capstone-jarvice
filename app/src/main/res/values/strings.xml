@@ -42,4 +42,6 @@
     <string name="pengaturan">Pengaturan</string>
     <string name="keahlian">Keahlian</string>
     <string name="logout">Logout</string>
+    <string name="nama_lowongan">Nama Lowongan</string>
+    <string name="nama_company">Nama Company</string>
 </resources>

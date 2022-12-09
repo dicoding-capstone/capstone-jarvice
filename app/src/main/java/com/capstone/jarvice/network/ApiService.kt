@@ -7,4 +7,8 @@ interface ApiService {
     @GET("imagelist.json")
     fun getBannerJob(
     ): Call<Response>
+
+    @GET("joblist.json")
+    fun getListJob(
+    ): Call<ListJobResponse>
 }
