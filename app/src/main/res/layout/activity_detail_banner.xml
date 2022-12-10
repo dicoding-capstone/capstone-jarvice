@@ -382,19 +382,18 @@
         app:layout_constraintTop_toBottomOf="@+id/card_view"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_bookmark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ToggleButton
+        android:id="@+id/toggleBookmark"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/white"
-        android:foregroundGravity="bottom"
-        app:fabSize="normal"
+        android:textOn=""
+        android:textOff=""
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/bookmark_toggle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_web_page"
-        app:maxImageSize="40dp"
-        app:srcCompat="@drawable/ic_baseline_bookmark_border_24"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/bt_web_page" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
