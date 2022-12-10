@@ -3,7 +3,6 @@ package com.capstone.jarvice.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.jarvice.model.UserPreference
-import com.capstone.jarvice.ui.bottomNavigation.ProfileViewModel
 import com.capstone.jarvice.ui.login.LoginViewModel
 import com.capstone.jarvice.ui.main.MainViewModel
 

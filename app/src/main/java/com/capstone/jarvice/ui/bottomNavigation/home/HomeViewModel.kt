@@ -1,8 +1,12 @@
 package com.capstone.jarvice.ui.bottomNavigation.home
 
+import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import com.capstone.jarvice.R
 import com.capstone.jarvice.network.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,6 +23,12 @@ class HomeViewModel : ViewModel() {
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String> = _toast
+
+    private val _jobSearch = MutableLiveData<String>()
+    val jobSearch: LiveData<String> = _jobSearch
+
+    private val _listSearch = MutableLiveData<MutableList<ListJobsItem>>()
+    val listSearch: LiveData<MutableList<ListJobsItem>> = _listSearch
 
     fun getBannerJob() {
         _isLoading.value = true
@@ -60,5 +70,35 @@ class HomeViewModel : ViewModel() {
             }
 
         })
+    }
+
+    fun getSearchJob(search: String) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService().getSearchJob("\"nama\"", "\"$search\"")
+        client.enqueue(object : Callback<MutableList<ListJobsItem>>{
+            override fun onResponse(
+                call: Call<MutableList<ListJobsItem>>,
+                response: retrofit2.Response<MutableList<ListJobsItem>>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    _listSearch.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<MutableList<ListJobsItem>>, t: Throwable) {
+                _toast.value = t.message.toString()
+            }
+
+        })
+    }
+
+    fun searchJob(search: String, fragment: Fragment) {
+        findNavController(fragment).navigate(R.id.navigation_explore)
+        _jobSearch.value = search
+    }
+
+    companion object {
+        const val SENDING_JOB_NAME = "sending job name"
     }
 }

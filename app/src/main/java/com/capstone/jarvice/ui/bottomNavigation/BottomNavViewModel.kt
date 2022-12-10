@@ -26,6 +26,3 @@ class BookmarkViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 }
-
-class ProfileViewModel: ViewModel() {
-}
