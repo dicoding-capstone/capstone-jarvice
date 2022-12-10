@@ -53,6 +53,12 @@ data class ListJobResponse(
 	val jobs: List<ListJobsItem>
 )
 
+data class SearchResponse(
+
+	@field:SerializedName("data")
+	val data: List<ListJobsItem>
+)
+
 @Parcelize
 data class ListJobsItem(
 
@@ -86,19 +92,3 @@ data class ListJobsItem(
 	@field:SerializedName("salary")
 	val salary: List<Int>? = null
 ): Parcelable
-
-data class UserResponse(
-
-	@field:SerializedName("email")
-	val email: String? = null,
-
-	@field:SerializedName("nameUser")
-	val nameUser: String? = null,
-
-	@field:SerializedName("photoUrl")
-	val image: String? = null,
-
-	@field:SerializedName("keahlian")
-	val keahlian: String? = null,
-
-)

@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.capstone.jarvice.R
+import com.capstone.jarvice.databinding.FragmentExploreBinding
 import com.capstone.jarvice.databinding.FragmentProfileBinding
 import com.capstone.jarvice.model.UserNetwork
 import com.capstone.jarvice.ui.bottomNavigation.editProfile.EditGoogleActivity
@@ -27,12 +28,12 @@ import com.google.firebase.database.FirebaseDatabase
 
 
 class ProfileFragment : Fragment() {
-    private var _binding: FragmentProfileBinding? = null
+    private lateinit var _binding: FragmentProfileBinding
     private lateinit var showLoading: LoadingDialog
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onCreateView(
@@ -107,6 +108,6 @@ class ProfileFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = FragmentProfileBinding.inflate(layoutInflater)
     }
 }

@@ -9,13 +9,21 @@
         android:id="@+id/navigation_home"
         android:name="com.capstone.jarvice.ui.bottomNavigation.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_explore4"
+            app:destination="@id/navigation_explore" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_explore"
         android:name="com.capstone.jarvice.ui.bottomNavigation.ExploreFragment"
         android:label="@string/title_explore"
-        tools:layout="@layout/fragment_explore" />
+        tools:layout="@layout/fragment_explore" >
+        <argument
+            android:name="SEARCH"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_bookmark"

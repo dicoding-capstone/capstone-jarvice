@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.jarvice.adapter.JobBannerAdapter
 import com.capstone.jarvice.adapter.ListJobAdapter
@@ -19,71 +20,79 @@ import com.capstone.jarvice.databinding.FragmentExploreBinding
 import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.network.ListJobsItem
 import com.capstone.jarvice.ui.bottomNavigation.home.HomeViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 
 class ExploreFragment : Fragment() {
 
-    private var _binding: FragmentExploreBinding? = null
+    private lateinit var _binding: FragmentExploreBinding
+    private val binding get() = _binding
     private val homeViewModel: HomeViewModel by viewModels()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        val exploreViewModel =
-//            ViewModelProvider(this).get(ExploreViewModel::class.java)
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+//        homeViewModel.jobSearch.observe(requireActivity()) {
+//            Log.d("Data Search Before", it)
+//            search(it)
+//        }
+
+        search()
+
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener{
+            binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
+        }
+
+        searchJob(null)
+
         binding.searchViewExplore.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchJob(query!!)
-                return if (query != null) {
+                if (query != null){
                     searchJob(query)
-                    false
-                } else{
-                    Toast.makeText(requireContext(), "Masukkan Karakter",Toast.LENGTH_SHORT).show()
-                    false
                 }
+                return false
             }
 
             @SuppressLint("SuspiciousIndentation")
             override fun onQueryTextChange(query: String?): Boolean {
-                if (query != null) {
+                if (query != null){
                     searchJob(query)
-                    return false
-                } else {
-                    return false
                 }
+                return false
             }
         })
-
-        homeViewModel.jobSearch.observe(requireActivity()) {
-            search(it)
-        }
 
         return root
     }
 
-    private fun search(search: String?) {
-        if (search != null) {
-            binding.searchViewExplore.setQuery(search, false)
+    private fun search() {
+        val args = this.arguments
+        findNavController().currentDestination?.arguments?.get("SEARCH")
+        val searchHome = args?.get("SEARCH")
+        if (searchHome != null){
+            Log.d("Search Home", searchHome.toString())
+            binding.searchViewExplore.setQuery(searchHome.toString(), false)
+            searchJob(searchHome.toString())
+        } else {
+            searchJob("A")
         }
-
     }
 
-    private fun searchJob(job: String) {
-        homeViewModel.getSearchJob(job)
-        homeViewModel.listSearch.observe(requireActivity()) {
-            Log.d("List Search 2", it.toString())
-            setBannerJob(it)
+    private fun searchJob(search: String?) {
+        if (search != null){
+            homeViewModel.firebaseSearch(search)
+            Log.d("List Search Ch", homeViewModel.listSearch.value.toString())
+            homeViewModel.listSearch.observe(requireActivity()) {
+                setBannerJob(it)
+            }
         }
     }
 
@@ -117,6 +126,6 @@ class ExploreFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = FragmentExploreBinding.inflate(layoutInflater)
     }
 }

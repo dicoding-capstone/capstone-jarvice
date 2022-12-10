@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.jarvice.R
 import com.capstone.jarvice.adapter.JobBannerAdapter
 import com.capstone.jarvice.adapter.ListJobAdapter
+import com.capstone.jarvice.databinding.FragmentExploreBinding
 import com.capstone.jarvice.databinding.FragmentHomeBinding
 import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.network.ListJobsItem
+import com.capstone.jarvice.ui.bottomNavigation.ExploreFragment
 import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.utils.ShowLoading
 import com.google.firebase.auth.FirebaseAuth
@@ -26,8 +28,8 @@ import com.google.firebase.database.FirebaseDatabase
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentHomeBinding
+    private val binding get() = _binding
     private lateinit var showLoading: ShowLoading
     private lateinit var progressBar: View
     private val homeViewModel: HomeViewModel by viewModels()
@@ -55,21 +57,9 @@ class HomeFragment : Fragment() {
             binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                if (p0 != null) {
-                    homeViewModel.searchJob(p0, this@HomeFragment)
-                } else {
-                    Toast.makeText(requireContext(), "Masukkan Pencarian", Toast.LENGTH_SHORT).show()
-                }
-                return false
-            }
-
-            override fun onQueryTextChange(p0: String?): Boolean {
-                return false
-            }
-
-        })
+        binding.searchView.setOnSearchClickListener {
+            findNavController().navigate(R.id.navigation_explore)
+        }
 
 
         showViewModel()
@@ -154,6 +144,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = FragmentHomeBinding.inflate(layoutInflater)
     }
 }

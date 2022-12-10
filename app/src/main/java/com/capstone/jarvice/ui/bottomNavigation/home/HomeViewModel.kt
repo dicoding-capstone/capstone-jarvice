@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.capstone.jarvice.R
 import com.capstone.jarvice.network.*
+import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -25,10 +26,10 @@ class HomeViewModel : ViewModel() {
     val toast: LiveData<String> = _toast
 
     private val _jobSearch = MutableLiveData<String>()
-    val jobSearch: LiveData<String> = _jobSearch
+    val jobSearch: MutableLiveData<String> = _jobSearch
 
-    private val _listSearch = MutableLiveData<MutableList<ListJobsItem>>()
-    val listSearch: LiveData<MutableList<ListJobsItem>> = _listSearch
+    private val _listSearch = MutableLiveData<List<ListJobsItem>>()
+    val listSearch: MutableLiveData<List<ListJobsItem>> = _listSearch
 
     fun getBannerJob() {
         _isLoading.value = true
@@ -72,33 +73,29 @@ class HomeViewModel : ViewModel() {
         })
     }
 
-    fun getSearchJob(search: String) {
+    fun firebaseSearch(search: String?) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getSearchJob("\"nama\"", "\"$search\"")
-        client.enqueue(object : Callback<MutableList<ListJobsItem>>{
-            override fun onResponse(
-                call: Call<MutableList<ListJobsItem>>,
-                response: retrofit2.Response<MutableList<ListJobsItem>>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    _listSearch.value = response.body()
-                }
+        val keyword : String
+        if (search == null) {
+            keyword = "A"
+        } else {
+            keyword = search
+        }
+        val dataSearch = ArrayList<ListJobsItem>()
+        FirebaseDatabase.getInstance().reference.child("jobsearch").orderByChild("name").startAt(keyword).get().addOnCompleteListener {
+            it.result.children.forEach { snapshot ->
+                val dataInsert: ListJobsItem? = snapshot.getValue(ListJobsItem::class.java)
+                dataSearch.add(dataInsert!!)
             }
+            _listSearch.value = dataSearch
+        }
 
-            override fun onFailure(call: Call<MutableList<ListJobsItem>>, t: Throwable) {
-                _toast.value = t.message.toString()
-            }
-
-        })
     }
 
-    fun searchJob(search: String, fragment: Fragment) {
-        findNavController(fragment).navigate(R.id.navigation_explore)
-        _jobSearch.value = search
-    }
-
-    companion object {
-        const val SENDING_JOB_NAME = "sending job name"
-    }
+//    fun searchJob(search: String?) {
+//        if (search != null){
+//            _jobSearch.value = search
+//        }
+//        Log.d("Data Search Model", jobSearch.value.toString())
+//    }
 }
