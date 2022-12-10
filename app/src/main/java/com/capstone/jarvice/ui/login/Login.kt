@@ -1,5 +1,6 @@
 package com.capstone.jarvice.ui.login
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -76,6 +77,7 @@ class Login : AppCompatActivity() {
 
         setupView()
         action()
+        playAnimation()
     }
 
     private fun setupView() {
@@ -246,5 +248,13 @@ class Login : AppCompatActivity() {
             show()
         }
 
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.logoJarvice, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 }
