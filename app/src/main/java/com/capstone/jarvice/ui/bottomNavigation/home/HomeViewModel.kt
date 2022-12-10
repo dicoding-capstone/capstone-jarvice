@@ -1,12 +1,8 @@
 package com.capstone.jarvice.ui.bottomNavigation.home
 
-import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import com.capstone.jarvice.R
 import com.capstone.jarvice.network.*
 import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
@@ -24,9 +20,6 @@ class HomeViewModel : ViewModel() {
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String> = _toast
-
-    private val _jobSearch = MutableLiveData<String>()
-    val jobSearch: MutableLiveData<String> = _jobSearch
 
     private val _listSearch = MutableLiveData<List<ListJobsItem>>()
     val listSearch: MutableLiveData<List<ListJobsItem>> = _listSearch
@@ -82,7 +75,9 @@ class HomeViewModel : ViewModel() {
             keyword = search
         }
         val dataSearch = ArrayList<ListJobsItem>()
-        FirebaseDatabase.getInstance().reference.child("jobsearch").orderByChild("name").startAt(keyword).get().addOnCompleteListener {
+        FirebaseDatabase.getInstance().reference.child("jobsearch")
+            .orderByChild("name").startAt(keyword.uppercase()).endAt(keyword.lowercase()+"\uf8ff")
+            .get().addOnCompleteListener {
             it.result.children.forEach { snapshot ->
                 val dataInsert: ListJobsItem? = snapshot.getValue(ListJobsItem::class.java)
                 dataSearch.add(dataInsert!!)

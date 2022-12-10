@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.jarvice.adapter.ListJobAdapter
 import com.capstone.jarvice.databinding.FragmentBookmarkBinding
 import com.capstone.jarvice.db.BookmarkJobList
 import com.capstone.jarvice.network.ListJobsItem
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 
 class BookmarkFragment : Fragment() {
@@ -29,6 +30,11 @@ class BookmarkFragment : Fragment() {
             inflater,
             container,
             false)
+
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener{
+            binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
+        }
 
         return binding.root
     }

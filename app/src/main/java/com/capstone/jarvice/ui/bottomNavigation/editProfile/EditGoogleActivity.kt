@@ -1,30 +1,24 @@
 package com.capstone.jarvice.ui.bottomNavigation.editProfile
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.basgeekball.awesomevalidation.AwesomeValidation
-import com.basgeekball.awesomevalidation.ValidationStyle
 import com.bumptech.glide.Glide
 import com.capstone.jarvice.R
 import com.capstone.jarvice.databinding.ActivityEditGoogleBinding
 import com.capstone.jarvice.model.UserNetwork
-import com.capstone.jarvice.ui.bottomNavigation.ProfileFragment
 import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.utils.LoadingDialog
 import com.capstone.jarvice.utils.createCustomTempFile
@@ -32,7 +26,6 @@ import com.capstone.jarvice.utils.uriToFile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 class EditGoogleActivity : AppCompatActivity() {
@@ -60,6 +53,7 @@ class EditGoogleActivity : AppCompatActivity() {
                 EditProfileActivity.REQUEST_CODE_PERMISSIONS
             )
         }
+        supportActionBar?.hide()
         getData()
     }
 

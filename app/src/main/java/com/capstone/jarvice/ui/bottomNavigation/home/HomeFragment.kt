@@ -1,27 +1,18 @@
 package com.capstone.jarvice.ui.bottomNavigation.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstone.jarvice.R
 import com.capstone.jarvice.adapter.JobBannerAdapter
 import com.capstone.jarvice.adapter.ListJobAdapter
-import com.capstone.jarvice.databinding.FragmentExploreBinding
 import com.capstone.jarvice.databinding.FragmentHomeBinding
 import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.network.ListJobsItem
-import com.capstone.jarvice.ui.bottomNavigation.ExploreFragment
-import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.utils.ShowLoading
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -52,18 +43,14 @@ class HomeFragment : Fragment() {
         showLoading = ShowLoading()
         progressBar = binding.progressBar
 
-        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener{
-            binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid != null) {
+            FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener{
+                binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
+            }
         }
-
-        binding.searchView.setOnSearchClickListener {
-            findNavController().navigate(R.id.navigation_explore)
-        }
-
 
         showViewModel()
-
     }
 
     private fun showViewModel() {

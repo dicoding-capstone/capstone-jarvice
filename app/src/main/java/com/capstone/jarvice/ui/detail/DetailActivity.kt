@@ -17,6 +17,7 @@ import com.capstone.jarvice.db.BookmarkJobList
 import com.capstone.jarvice.model.UserPreference
 import com.capstone.jarvice.network.ListJobsItem
 import com.capstone.jarvice.ui.ViewModelFactory
+import com.capstone.jarvice.ui.main.MainActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -76,6 +77,13 @@ class DetailActivity : AppCompatActivity() {
                 binding.toggleBookmark.isChecked = true
             }
 
+        }
+
+        binding.imgArrowBack.setOnClickListener{
+            Intent(this@DetailActivity, MainActivity::class.java).also {
+                startActivity(it)
+                finish()
+            }
         }
 
         binding.apply {

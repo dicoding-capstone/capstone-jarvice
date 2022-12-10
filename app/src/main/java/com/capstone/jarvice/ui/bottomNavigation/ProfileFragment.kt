@@ -9,13 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.capstone.jarvice.R
-import com.capstone.jarvice.databinding.FragmentExploreBinding
 import com.capstone.jarvice.databinding.FragmentProfileBinding
 import com.capstone.jarvice.model.UserNetwork
 import com.capstone.jarvice.ui.bottomNavigation.editProfile.EditGoogleActivity
@@ -44,41 +41,45 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
         showLoading = LoadingDialog(requireActivity())
-        showLoading.startLoading()
 
-        val uid: String = FirebaseAuth.getInstance().currentUser!!.uid
+        val uid: String? = FirebaseAuth.getInstance().currentUser?.uid
 
-        FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener {
-            Log.d("Data User", it.result.toString())
-            if (it.isSuccessful){
-                binding.emailProfile.text = it.result.child("email").value.toString()
-                binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
-                val profilePicture: String = it.result.child("photoUrl").value.toString()
-                Glide.with(requireContext()).load(profilePicture).centerCrop().error(R.drawable.ic_profile_picture).into(binding.ivProfilePicture)
-                showLoading.dismissLoading()
-            } else {
-                showLoading.dismissLoading()
-                Toast.makeText(requireContext(), "Gagal Memuat Data",Toast.LENGTH_SHORT).show()
+        if (uid != null) {
+            showLoading.startLoading()
+            FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener {
+                Log.d("Data User", it.result.toString())
+                if (it.isSuccessful){
+                    binding.emailProfile.text = it.result.child("email").value.toString()
+                    binding.tvWelcomeUsername.text = it.result.child("nameUser").value.toString()
+                    val profilePicture: String = it.result.child("photoUrl").value.toString()
+                    Glide.with(requireContext()).load(profilePicture).centerCrop().error(R.drawable.ic_profile_picture).into(binding.ivProfilePicture)
+                    showLoading.dismissLoading()
+                } else {
+                    showLoading.dismissLoading()
+                    Toast.makeText(requireContext(), "Gagal Memuat Data",Toast.LENGTH_SHORT).show()
+                }
             }
         }
         binding.editProfile.setOnClickListener {
-            FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener {
-                val result = it.result
-                val dataUser = UserNetwork(
-                    nameUser = result.child("nameUser").value.toString(),
-                    email = result.child("email").value.toString(),
-                    photoUrl = result.child("photoUrl").value.toString(),
-                )
-                Log.d("Method Login Check", result.child("method").value.toString())
-                if (result.child("method").value == true){
-                    Intent(requireContext(), EditProfileActivity::class.java).also {
-                        it.putExtra(EditProfileActivity.DATA_USER, dataUser)
-                        startActivity(it)
-                    }
-                } else {
-                    Intent(requireContext(), EditGoogleActivity::class.java).also {
-                        it.putExtra(EditGoogleActivity.DATA_USER, dataUser)
-                        startActivity(it)
+            if (uid != null) {
+                FirebaseDatabase.getInstance().reference.child("users").child(uid).get().addOnCompleteListener {
+                    val result = it.result
+                    val dataUser = UserNetwork(
+                        nameUser = result.child("nameUser").value.toString(),
+                        email = result.child("email").value.toString(),
+                        photoUrl = result.child("photoUrl").value.toString(),
+                    )
+                    Log.d("Method Login Check", result.child("method").value.toString())
+                    if (result.child("method").value == true){
+                        Intent(requireContext(), EditProfileActivity::class.java).also {
+                            it.putExtra(EditProfileActivity.DATA_USER, dataUser)
+                            startActivity(it)
+                        }
+                    } else {
+                        Intent(requireContext(), EditGoogleActivity::class.java).also {
+                            it.putExtra(EditGoogleActivity.DATA_USER, dataUser)
+                            startActivity(it)
+                        }
                     }
                 }
             }

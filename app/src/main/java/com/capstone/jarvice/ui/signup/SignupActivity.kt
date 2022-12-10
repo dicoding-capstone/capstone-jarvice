@@ -18,11 +18,9 @@ import com.basgeekball.awesomevalidation.AwesomeValidation
 import com.basgeekball.awesomevalidation.ValidationStyle
 import com.capstone.jarvice.R
 import com.capstone.jarvice.databinding.ActivitySignupBinding
-import com.capstone.jarvice.model.UserModel
 import com.capstone.jarvice.model.UserNetwork
 import com.capstone.jarvice.ui.login.Login
 import com.capstone.jarvice.utils.LoadingDialog
-import com.capstone.jarvice.utils.ShowLoading
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

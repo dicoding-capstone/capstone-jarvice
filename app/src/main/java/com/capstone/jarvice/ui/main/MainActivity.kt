@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private val mainViewModel by viewModels<MainViewModel> {
-        ViewModelFactory(UserPreference.getInstance(dataStore))
+        ViewModelFactory(UserPreference.getInstance(dataStore), this@MainActivity.application, "")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

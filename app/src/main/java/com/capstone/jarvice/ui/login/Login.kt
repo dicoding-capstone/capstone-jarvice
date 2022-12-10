@@ -11,7 +11,6 @@ import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -31,10 +30,6 @@ import com.capstone.jarvice.ui.ViewModelFactory
 import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.ui.signup.SignupActivity
 import com.capstone.jarvice.utils.LoadingDialog
-import com.capstone.jarvice.utils.ShowLoading
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -42,10 +37,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
@@ -59,16 +50,14 @@ class Login : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var showLoading: LoadingDialog
     private lateinit var progressBar: View
-    private lateinit var callbackManager: CallbackManager
     private val loginViewModel by viewModels<LoginViewModel> {
-        ViewModelFactory(UserPreference.getInstance(dataStore))
+        ViewModelFactory(UserPreference.getInstance(dataStore), this@Login.application, "")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        FacebookSdk.sdkInitialize(applicationContext)
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions
@@ -129,7 +118,6 @@ class Login : AppCompatActivity() {
                                 Toast.makeText(
                                     this,
                                     it.exception.toString(),
-//                                    getString(R.string.invalid_account),
                                     Toast.LENGTH_SHORT).show()
                             }
                         }

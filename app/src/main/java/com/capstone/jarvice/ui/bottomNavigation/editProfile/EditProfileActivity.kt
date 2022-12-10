@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.basgeekball.awesomevalidation.AwesomeValidation
@@ -24,9 +22,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle
 import com.bumptech.glide.Glide
 import com.capstone.jarvice.R
 import com.capstone.jarvice.databinding.ActivityEditProfileBinding
-import com.capstone.jarvice.databinding.ActivityMainBinding
 import com.capstone.jarvice.model.UserNetwork
-import com.capstone.jarvice.ui.bottomNavigation.ProfileFragment
 import com.capstone.jarvice.ui.main.MainActivity
 import com.capstone.jarvice.utils.LoadingDialog
 import com.capstone.jarvice.utils.createCustomTempFile
@@ -34,7 +30,6 @@ import com.capstone.jarvice.utils.uriToFile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 class EditProfileActivity : AppCompatActivity() {
@@ -62,6 +57,7 @@ class EditProfileActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
+        supportActionBar?.hide()
         getData()
     }
 
@@ -102,7 +98,7 @@ class EditProfileActivity : AppCompatActivity() {
                     if (imageUri != null) {
                         uploadToServer(imageUri!!)
                     } else {
-                        uploadToDatabase(username, null)
+                        uploadToDatabase(username, null, email)
                         Log.d("Image Uri", "Is Empty")
                     }
                 } else {
@@ -123,15 +119,17 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadToDatabase(username: String, imgLink: String?) {
+    private fun uploadToDatabase(username: String, imgLink: String?, email: String) {
         if (imgLink != null) {
             val dbUser = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
             val userHash = hashMapOf<String, Any>(
                 "nameUser" to username,
                 "photoUrl" to imgLink,
+                "email" to email
             )
-            FirebaseAuth.getInstance().currentUser!!.updateEmail(binding.edtEmail.text.toString())
             FirebaseAuth.getInstance().currentUser!!.updatePassword(binding.edtPasswordConfirmation.text.toString())
+            FirebaseAuth.getInstance().currentUser!!.updateEmail(binding.edtEmail.text.toString())
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.edtEmail.text.toString(), binding.edtPasswordConfirmation.text.toString())
             dbUser.updateChildren(userHash).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Intent(this@EditProfileActivity, MainActivity::class.java).also {
@@ -188,7 +186,8 @@ class EditProfileActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 ref.downloadUrl.addOnCompleteListener { Uri ->
                     val username = binding.edtUsername.text.toString()
-                    uploadToDatabase(username, Uri.result.toString())
+                    val email = binding.edtEmail.text.toString()
+                    uploadToDatabase(username, Uri.result.toString(), email)
                 }
             }
         }

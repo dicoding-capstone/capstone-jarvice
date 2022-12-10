@@ -6,18 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstone.jarvice.adapter.JobBannerAdapter
 import com.capstone.jarvice.adapter.ListJobAdapter
 import com.capstone.jarvice.databinding.FragmentExploreBinding
-import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.network.ListJobsItem
 import com.capstone.jarvice.ui.bottomNavigation.home.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -38,11 +33,6 @@ class ExploreFragment : Fragment() {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-//        homeViewModel.jobSearch.observe(requireActivity()) {
-//            Log.d("Data Search Before", it)
-//            search(it)
-//        }
 
         search()
 
