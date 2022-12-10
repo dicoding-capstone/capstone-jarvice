@@ -1,7 +1,6 @@
 package com.capstone.jarvice.ui.bottomNavigation.bookmark
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.capstone.jarvice.db.BookmarkJobList

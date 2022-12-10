@@ -16,4 +16,19 @@ class BookmarkJobList(
 
     @field:ColumnInfo(name = "image")
     val image: String,
+
+    @field:ColumnInfo(name = "web")
+    val web: String,
+
+    @field:ColumnInfo(name = "fulltime")
+    val fulltime: String,
+
+    @field:ColumnInfo(name = "category")
+    val category: String,
+
+    @field:ColumnInfo(name = "experience")
+    val experience: String,
+
+    @field:ColumnInfo(name = "location")
+    val location: String
 ) : Serializable

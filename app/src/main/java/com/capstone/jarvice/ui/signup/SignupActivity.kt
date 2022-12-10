@@ -1,5 +1,6 @@
 package com.capstone.jarvice.ui.signup
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
@@ -57,6 +58,7 @@ class SignupActivity : AppCompatActivity() {
 
         setupView()
         action()
+        playAnimation()
     }
 
     private fun setupView() {
@@ -243,5 +245,13 @@ class SignupActivity : AppCompatActivity() {
             create()
             show()
         }
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.logoJarvice, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 }

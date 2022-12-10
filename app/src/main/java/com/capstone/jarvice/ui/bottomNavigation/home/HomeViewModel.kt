@@ -86,11 +86,4 @@ class HomeViewModel : ViewModel() {
         }
 
     }
-
-//    fun searchJob(search: String?) {
-//        if (search != null){
-//            _jobSearch.value = search
-//        }
-//        Log.d("Data Search Model", jobSearch.value.toString())
-//    }
 }

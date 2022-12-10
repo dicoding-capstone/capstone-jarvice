@@ -17,7 +17,6 @@ import com.capstone.jarvice.db.BookmarkJobList
 import com.capstone.jarvice.model.UserPreference
 import com.capstone.jarvice.network.JobsItem
 import com.capstone.jarvice.ui.ViewModelFactory
-import com.capstone.jarvice.ui.main.MainActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -63,8 +62,18 @@ class DetailActivityBanner : AppCompatActivity() {
             val dataInsert = detailJobs.company?.let { it1 ->
                 detailJobs.name?.let { it2 ->
                     detailJobs.image?.let { it3 ->
-                        BookmarkJobList(it1,
-                            it2, it3)
+                        detailJobs.web?.let { it4 ->
+                            detailJobs.fulltime?.let { it5 ->
+                                detailJobs.category?.let { it6 ->
+                                    detailJobs.experience?.let { it7 ->
+                                        detailJobs.location?.let { it8 ->
+                                            BookmarkJobList(it1,
+                                                it2, it3, it4, it5, it6, it7, it8)
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -79,11 +88,8 @@ class DetailActivityBanner : AppCompatActivity() {
 
         }
 
-        binding.imgArrowBack.setOnClickListener{
-            Intent(this@DetailActivityBanner, MainActivity::class.java).also {
-                startActivity(it)
-                finish()
-            }
+        binding.imgArrowBack.setOnClickListener {
+            onBackPressed()
         }
 
         binding.apply {
@@ -93,7 +99,6 @@ class DetailActivityBanner : AppCompatActivity() {
             tvLocationFill.text = detailJobs.location
             tvLevelFill.text = detailJobs.experience
             tvTimeFill.text = detailJobs.fulltime
-            tvTagFill.text = detailJobs.salary.toString()
 
             btWebPage.setOnClickListener {
                 detailJobs.web?.let { it1 -> goLink(it1) }
