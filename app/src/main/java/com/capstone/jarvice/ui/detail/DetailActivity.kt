@@ -1,5 +1,6 @@
 package com.capstone.jarvice.ui.detail
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -8,16 +9,19 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.capstone.jarvice.databinding.ActivityDetailBinding
+import com.capstone.jarvice.db.BookmarkJobList
+import com.capstone.jarvice.model.UserPreference
 import com.capstone.jarvice.network.ListJobsItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.capstone.jarvice.ui.ViewModelFactory
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
-    private val detailViewModel by viewModels<DetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +48,35 @@ class DetailActivity : AppCompatActivity() {
     private fun setDetailJobs() {
         val detailJobs = intent.getParcelableExtra<ListJobsItem>(DETAIL_JOB) as ListJobsItem
 
-//        var isChecked = false
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val count = detailViewModel.bookmarkCheck(detailJobs.name)
-//            withContext(Dispatchers.Main) {
-//                if (count != null) {
-//                    binding.toggleBookmark.isChecked = true
-//                    isChecked = true
-//                } else {
-//                    binding.toggleBookmark.isChecked = false
-//                    isChecked = false
-//                }
-//            }
-//        }
+        val detailViewModel by viewModels<DetailViewModel> {
+            ViewModelFactory(UserPreference.getInstance(dataStore),
+                this@DetailActivity.application,
+                detailJobs.company.toString())
+        }
+
+        detailViewModel.bookmarked.observe(this) {
+            binding.toggleBookmark.isChecked = it
+        }
+
+        binding.toggleBookmark.setOnClickListener {
+            val dataInsert = detailJobs.company?.let { it1 ->
+                detailJobs.name?.let { it2 ->
+                    detailJobs.image?.let { it3 ->
+                        BookmarkJobList(it1,
+                            it2, it3)
+                    }
+                }
+            }
+
+            if (detailViewModel.checkBookmark()!!) {
+                detailViewModel.delete(dataInsert!!)
+                binding.toggleBookmark.isChecked = false
+            } else {
+                detailViewModel.insert(dataInsert!!)
+                binding.toggleBookmark.isChecked = true
+            }
+
+        }
 
         binding.apply {
             tvJobFill.text = detailJobs.name
@@ -70,21 +90,6 @@ class DetailActivity : AppCompatActivity() {
             btWebPage.setOnClickListener {
                 detailJobs.web?.let { it1 -> goLink(it1) }
             }
-
-//            toggleBookmark.setOnClickListener {
-//                isChecked = !isChecked
-//                if (isChecked) {
-//                    detailJobs.image?.let { it1 ->
-//                        detailJobs.company?.let { it2 ->
-//                            detailViewModel.addBookmark(it1, detailJobs.name,
-//                                it2)
-//                        }
-//                    }
-//                } else {
-//                    detailViewModel.removeBookmark(detailJobs.name)
-//                }
-//                toggleBookmark.isChecked = isChecked
-//            }
         }
     }
 

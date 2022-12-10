@@ -2,17 +2,14 @@ package com.capstone.jarvice.ui.bottomNavigation.bookmark
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import com.capstone.jarvice.db.BookmarkJobList
+import com.capstone.jarvice.repository.BookmarkRepository
 
-class BookmarkViewModel(application: Application) : AndroidViewModel(application) {
-//    private var bookmarkDao: BookmarkDao?
-//    private var bookmarkDb: BookmarkDatabase?
-//
-//    init {
-//        bookmarkDb = BookmarkDatabase.getDatabase(application)
-//        bookmarkDao = bookmarkDb?.bookmarkDao()
-//    }
-//
-//    fun getBookmark(): LiveData<List<BookmarkList>>? {
-//        return bookmarkDao?.getBookmarkListJobs()
-//    }
+class BookmarkViewModel(application: Application) : ViewModel() {
+    private val mBookmarkRepository: BookmarkRepository =
+        BookmarkRepository(application)
+
+    val bookmarkList: LiveData<List<BookmarkJobList>> = mBookmarkRepository.getAllBookmark()
 }

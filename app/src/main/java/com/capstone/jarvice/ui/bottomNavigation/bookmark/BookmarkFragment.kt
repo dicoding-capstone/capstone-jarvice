@@ -6,14 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstone.jarvice.adapter.ListJobAdapter
 import com.capstone.jarvice.databinding.FragmentBookmarkBinding
+import com.capstone.jarvice.db.BookmarkJobList
+import com.capstone.jarvice.network.ListJobsItem
 
 
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
-    private val bookmarkViewModel: BookmarkViewModel by viewModels()
+    private lateinit var bookmarkViewModel: BookmarkViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,34 +36,36 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        showViewModel()
+        bookmarkViewModel = BookmarkViewModel(requireActivity().application)
+        showViewModel()
     }
 
-//    private fun showViewModel() {
-//        bookmarkViewModel.getBookmark()?.observe(requireActivity()) {
-//            showBookmark(it)
-//        }
-//    }
-//
-//    private fun showBookmark(listJobsItems: List<BookmarkList>) {
-//        val job = ArrayList<ListJobsItem>()
-//
-//        for (i in listJobsItems) {
-//            val jobsList = ListJobsItem(
-//                image = i.image,
-//                name = i.name,
-//                company = i.company
-//            )
-//            job.add(jobsList)
-//        }
-//
-//        val jobListAdapter = ListJobAdapter(job)
-//        binding.rvListJob.apply {
-//            layoutManager =
-//                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//            adapter = jobListAdapter
-//        }
-//    }
+    private fun showViewModel() {
+        bookmarkViewModel.bookmarkList.observe(requireActivity()) {
+            showBookmark(it)
+        }
+    }
+
+    private fun showBookmark(listJobsItems: List<BookmarkJobList>) {
+        val job = ArrayList<ListJobsItem>()
+
+        for (i in listJobsItems) {
+            val jobsList = ListJobsItem(
+                image = i.image,
+                name = i.company,
+                company = i.company
+            )
+            job.add(jobsList)
+        }
+
+        val jobListAdapter = ListJobAdapter(job)
+        binding.rvListJob.apply {
+            layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = jobListAdapter
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
