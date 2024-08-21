@@ -1,4 +1,4 @@
-# capstone-jarvice
+# JARVICE APP (Job Search Service Application)
 
 Team ID: C22-162
 
